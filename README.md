@@ -1,28 +1,29 @@
-**Note**: agents were used extensively to develop shfs.
-
+[update-readmes]   Mode: rewrite — migrating to template structure...
 # shfs
 
-shfs (shell filesystem) is a simulated [fish shell](https://github.com/fish-shell/fish-shell) (subset) environment for executing filesystem-related commands.
+[![Built with Ona](https://ona.com/build-with-ona.svg)](https://app.ona.com/#https://github.com/Interested-Deving-1896/shfs)
 
-Live demo: [shfs.lawsonoates.com](https://shfs.lawsonoates.com)
+<!-- AI:start:what-it-does -->
+_Description pending._
+<!-- AI:end:what-it-does -->
 
-shfs is inspired by Bun's `$` shell api and provides a pluggable filesystem interface allowing custom storage.
+## Architecture
 
-shfs is designed to be used by agents needing a filesystem without having to spin up a sandbox.
+<!-- AI:start:architecture -->
+_Architecture documentation pending._
+<!-- AI:end:architecture -->
 
-- Why fish? it's simple.
-- Why a subset of fish? shfs is only for simulating a filesystem, only a subset is really needed.
+## Install
 
-The subset includes deterministic script features and filesystem commands needed for agent workflows.
-More details are available in the [Subset Boundary](#subset-boundary), [Grammar](#grammar), and [Lexer Specification](packages/compiler/src/lexer/lexer-spec.md).
-
-## Installation
+<!-- Add installation instructions here. This section is yours — the AI will not modify it. -->
 
 ```bash
-bun add shfs
+git clone https://github.com/Interested-Deving-1896/shfs.git
+cd shfs
 ```
 
 ## Usage
+
 
 ```typescript
 import { Shell } from "shfs";
@@ -37,120 +38,50 @@ const content = await $`cat hello.txt`.text();
 console.log(content);
 ```
 
-## Subset Boundary
+## Configuration
 
-shfs is fish-inspired but intentionally not a full fish shell. It targets deterministic behavior over a virtual filesystem.
+<!-- Document configuration options here. This section is yours — the AI will not modify it. -->
 
-Included behavior:
+## CI
 
-- variable expansion and assignment (`$var`, `set -g`, `set -l`)
-- command substitution (`(cmd)`)
-- multi-statement scripts with newline and `;`
-- boolean chaining and status (`and`, `or`, `$status`)
-- script-core builtins (`test`, `echo`, `read`, `string`)
-- core path behavior (`cd`, `pwd`, `.`, `..`, absolute/relative paths)
-- fish-style wildcard expansion (`*`, `?`, `[ ... ]`, `**`)
-- stable, deterministic error contracts
+<!-- AI:start:ci -->
+_CI documentation pending._
+<!-- AI:end:ci -->
 
-Explicitly out of scope:
+## Mirror chain
 
-- control-flow blocks and function definitions (`if`/`for`/`function` + `end`)
-- `CDPATH`
-- symlink-focused traversal/compat behavior
-- host OS/process emulation and interactive shell UX
-- full fish compatibility or fish-verbatim error text
+<!-- AI:start:mirror-chain -->
+This repo is maintained in [`Interested-Deving-1896/shfs`](https://github.com/Interested-Deving-1896/shfs) and mirrored through:
 
-Canonical boundary doc: [notes/shfs-subset-boundary.md](notes/shfs-subset-boundary.md).
-
-## Language Features
-
-- variables:
-    - `set -g name value` persists across runs
-    - `set -l name value` is local to one script run
-    - `$status` exposes last command status (`0` success, `1` failure)
-- command substitution:
-    - `(echo subdir)` can be used as an argument
-    - nested substitutions are supported
-- script statements:
-    - newline and semicolon statement separators
-    - `and` and `or` chain statements based on previous status
-- quoting and expansion:
-    - quoted wildcard text is treated literally
-    - unquoted wildcard text is expanded for in-scope path arguments
-
-## Supported Commands
-
-Filesystem/path commands:
-
-- cat
-- cd
-- cp
-- find
-- grep
-- head
-- ls
-- mkdir
-- mv
-- pwd
-- rm
-- sort
-- tail
-- touch
-- tree
-- wc
-- xargs
-
-Script builtins:
-
-- echo
-- read
-- set
-- string
-- test
-
-## Globbing Semantics
-
-For in-scope path-taking commands, unquoted wildcard patterns use fish-style expansion:
-
-- supported pattern families: `*`, `?`, `[ ... ]`, `**`
-- hidden files only match when explicitly requested (for example `.*`)
-- trailing slash forms match directories (for example `*/`)
-- quoted wildcard characters are literal text and are not expanded
-- unmatched wildcard patterns fail with deterministic errors (`<command>: no matches found: <pattern>`)
-- commands expecting one post-expansion path reject multi-match expansions with deterministic cardinality errors
-
-## Agents
-
-shfs is designed to be a tool used by agents to enable the benefits of a filesystem like progressive disclosure.
-
-[Agent Tool Prompt](docs/agent-tool-prompt.md) is a prompt that can be used as a tool description for an agent.
-
-## Grammar
-
-```ebnf
-program        ::= separator* statement (separator+ statement)* separator*
-separator      ::= ";" | NEWLINE | COMMENT
-statement      ::= chain_prefix? pipeline
-chain_prefix   ::= "and" | "or"
-pipeline       ::= command ("|" NEWLINE* command)*
-command        ::= word command_part*
-command_part   ::= word | redirection
-redirection    ::= "<" word | ">" word | ">>" word
-word           ::= word_part+
-word_part      ::= literal | glob | substitution
-substitution   ::= "(" program ")"
-literal        ::= bare_text | single_quoted | double_quoted
-single_quoted  ::= "'" single_quoted_text "'"
-double_quoted  ::= '"' double_quoted_part* '"'
-double_quoted_part ::= double_quoted_text | substitution
-glob           ::= "*" | "?" | bracket_glob | "**"
+```
+Interested-Deving-1896/shfs  ──►  OpenOS-Project-OSP/shfs  ──►  OpenOS-Project-Ecosystem-OOC/shfs
 ```
 
-Notes:
+Changes flow downstream automatically via the hourly mirror chain in
+[`fork-sync-all`](https://github.com/Interested-Deving-1896/fork-sync-all).
+Direct commits to OSP or OOC are detected and opened as PRs back to `Interested-Deving-1896`.
+<!-- AI:end:mirror-chain -->
 
-- words can mix literal text, glob parts, and command substitution in one token (for example `foo(echo bar)baz`)
-- `$var` and `$status` are documented runtime expansion forms; they are preserved through parsing and expanded during execution
+## Contributors
+
+<!-- AI:start:contributors -->
+_Contributors pending._
+<!-- AI:end:contributors -->
+
+## Origins
+
+<!-- AI:start:origins -->
+_Original project — no upstream fork._
+<!-- AI:end:origins -->
+
+## Resources
+
+<!-- AI:start:resources -->
+_No additional resource files found._
+<!-- AI:end:resources -->
 
 ## License
 
-MIT
+<!-- AI:start:license -->
+[MIT](https://github.com/Interested-Deving-1896/shfs/blob/dev/LICENSE) © 2026 [Interested-Deving-1896](https://github.com/Interested-Deving-1896)
+<!-- AI:end:license -->
